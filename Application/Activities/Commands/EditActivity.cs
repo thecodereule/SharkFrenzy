@@ -1,4 +1,5 @@
 using System;
+using Application.Core;
 using AutoMapper;
 using Domain;
 using MediatR;
@@ -9,17 +10,18 @@ namespace Application.Activities.Commands;
 
 public class EditActivity
 {
-    public class Command : IRequest
+    public class Command : IRequest<Result<Unit>>
     {
         public required Activity Activity { get; set; }
     }
 
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<Unit>>
     {
-        public async Task Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var activity = await context.Activities.FindAsync(new object[] { request.Activity.Id }, cancellationToken)
-                ?? throw new Exception("Cannot find activity");
+            var activity = await context.Activities.FindAsync(new object[] { request.Activity.Id }, cancellationToken);
+
+            if (activity == null) return Result<Unit>.Failure("Activity not foun", 404);
 
             // Log the state of the activity before mapping
             Console.WriteLine($"Before Mapping: Title = {activity.Title}, Description = {activity.Description}");
@@ -31,8 +33,11 @@ public class EditActivity
             Console.WriteLine($"After Mapping: Title = {activity.Title}, Description = {activity.Description}");
 
             // Save changes to the database
-            context.Attach(activity).State = EntityState.Modified;
-            await context.SaveChangesAsync(cancellationToken);
+            var result = await context.SaveChangesAsync(cancellationToken) > 0;
+
+            if (!result) return Result<Unit>.Failure("Failed to update the activity", 400);
+
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }
