@@ -1,34 +1,35 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
+import type { Activity } from "../types";
 
 export const useActivities = (id?: string) => {
+
     const queryClient = useQueryClient();
     const location = useLocation();
 
     const { data: activities, isPending } = useQuery({
         queryKey: ['activities'],
         queryFn: async () => {
-            const response = await agent.get<Activity[]>('/activities');
-            console.log('API Response:', response.data);
+            const response = await agent.get<Activity[]>('activities');
             return response.data;
         },
         enabled: !id && location.pathname === '/activities'
     });
 
-    const {data: activity, isLoading: isLoadingActivity} = useQuery({
-        queryKey: ['activities', id],
+    const { data: activity, isLoading: isLoadingActivity } = useQuery({
+        queryKey: ['activitiies', id],
         queryFn: async () => {
-            const response = await agent.get<Activity>(`/activities/${id}`);
-            return response.data;
+            const response = await agent.get<Activity>(`/activities/${id}`)
+            return response.data
         },
-        enabled: !!id, // Only run this query if id is provided
-    }) 
+        enabled: !!id
+    })
 
     const updateActivity = useMutation({
-        mutationFn: async (activity: Activity) => {
-            await agent.put('/activities', activity);
-        },
+        mutationFn: async (activity: Activity) => (
+            await agent.put('/activities', activity)
+        ),
         onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: ['activities']
@@ -49,9 +50,9 @@ export const useActivities = (id?: string) => {
     })
 
     const deleteActivity = useMutation({
-        mutationFn: async (id: string) => {
-            await agent.delete(`/activities/${id}`);
-        },
+        mutationFn: async (id: string) => (
+            await agent.delete(`/activities/${id}`)
+        ),
         onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: ['activities']
@@ -59,14 +60,13 @@ export const useActivities = (id?: string) => {
         }
     })
 
-    return { 
-        activities, 
-        isPending, 
-        updateActivity, 
-        createActivity, 
+    return {
+        activities,
+        isPending,
+        updateActivity,
+        createActivity,
         deleteActivity,
         activity,
-        isLoadingActivity,
-    };
-    
+        isLoadingActivity
+    }
 }
