@@ -32,7 +32,9 @@ export type LocationIQAddress = {
   house_number: string
   road: string
   suburb?: string
-  city: string
+  town?: string
+  village?: string
+  city?: string
   county: string
   state: string
   postcode: string

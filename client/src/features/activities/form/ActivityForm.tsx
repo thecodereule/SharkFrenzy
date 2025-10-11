@@ -9,6 +9,7 @@ import TextInput from "../../../app/shared/components/TextInput";
 import SelectInput from "../../../app/shared/components/SelectInput";
 import { categoryOptions } from "./categoryOptions";
 import DateTimeInput from "../../../app/shared/components/DateTimeInput";
+import LocationInput from "../../../app/shared/components/LocationInput";
 
 export default function ActivityForm() {
     const { control, reset, handleSubmit } = useForm<ActivitySchema>({
@@ -19,8 +20,12 @@ export default function ActivityForm() {
             description: '',
             category: '',
             date: new Date(),
-            city: '',
-            venue: ''
+            location: {
+                venue: '',
+                city: '',
+                latitude: 0,
+                longitude: 0
+            }
         }
     });
     const { id } = useParams();
@@ -28,7 +33,18 @@ export default function ActivityForm() {
 
     useEffect(() => {
         if (activity) {
-            reset(activity);
+            reset({
+                title: activity.title,
+                description: activity.description,
+                category: activity.category,
+                date: new Date(activity.date),
+                location: {
+                    venue: activity.venue,
+                    city: activity.city,
+                    latitude: activity.latitude,
+                    longitude: activity.longitude
+                }
+            });
         }
     }, [activity, reset])
 
@@ -49,8 +65,7 @@ export default function ActivityForm() {
                 <TextInput label='Description' control={control} name='description' multiline rows={3} />
                 <SelectInput items={categoryOptions} label='Category' control={control} name='category' />
                 <DateTimeInput label='Date' control={control} name="date" />
-                <TextInput label='City' control={control} name='city' />
-                <TextInput label='Venue' control={control} name='venue' />
+                <LocationInput control={control} label='Enter the location' name='location' />
                 <Box display='flex' justifyContent='end' gap={3}>
                     <Button color='inherit'>Cancel</Button>
                     <Button
