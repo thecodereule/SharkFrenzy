@@ -28,10 +28,7 @@ export default function ActivityForm() {
 
     useEffect(() => {
         if (activity) {
-            reset({
-                ...activity,
-                date: new Date(activity.date) // Convert string to Date
-            });
+            reset(activity);
         }
     }, [activity, reset])
 
