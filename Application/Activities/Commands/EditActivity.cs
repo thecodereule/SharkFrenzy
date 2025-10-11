@@ -1,4 +1,5 @@
 using System;
+using Application.Activities.DTOs;
 using Application.Core;
 using AutoMapper;
 using Domain;
@@ -12,14 +13,14 @@ public class EditActivity
 {
     public class Command : IRequest<Result<Unit>>
     {
-        public required Activity Activity { get; set; }
+        public required EditActivityDto ActivityDto { get; set; }
     }
 
     public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<Unit>>
     {
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var activity = await context.Activities.FindAsync(new object[] { request.Activity.Id }, cancellationToken);
+            var activity = await context.Activities.FindAsync(new object[] { request.ActivityDto.Id }, cancellationToken);
 
             if (activity == null) return Result<Unit>.Failure("Activity not foun", 404);
 
@@ -27,7 +28,7 @@ public class EditActivity
             Console.WriteLine($"Before Mapping: Title = {activity.Title}, Description = {activity.Description}");
 
             // Map the changes from the request to the existing activity
-            mapper.Map(request.Activity, activity);
+            mapper.Map(request.ActivityDto, activity);
 
             // Log the state of the activity after mapping
             Console.WriteLine($"After Mapping: Title = {activity.Title}, Description = {activity.Description}");
