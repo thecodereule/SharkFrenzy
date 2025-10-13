@@ -3,7 +3,6 @@ using Application.Activities.DTOs;
 using Application.Activities.Queries;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Differencing;
 
 namespace API.Controllers;
 
