@@ -25,8 +25,9 @@ export default function HomePage() {
         </Typography>
        </Box>
        <Typography variant="h2">
-        Welcome to Shar Frenzy
+        Welcome to Shark Frenzy
        </Typography>
+       <Typography variant="h5">A place to share events</Typography>
        <Button component={Link} to='/activities' size='large' variant="contained" sx={{height: 80, borderRadius: 4, fontSize: '1.5rem'}}>
         Take me to the activities!
        </Button>
