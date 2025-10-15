@@ -17,7 +17,7 @@ export default function LoginForm() {
     });
 
     const onSubmit = async (data: loginSchema) => {
-        await loginUser.mutateAsync(data, {
+        loginUser.mutate(data, {
             onSuccess: () => {
                 navigate(location.state?.from || '/activities');
             }
