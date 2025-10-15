@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useAccount } from "../../lib/hooks/useAccount"
-import { loginSchema } from "../../lib/schemas/loginSchema";
+import { loginSchema, type LoginSchema } from "../../lib/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
@@ -11,17 +11,18 @@ export default function LoginForm() {
     const { loginUser } = useAccount();
     const navigate = useNavigate();
     const location = useLocation();
-    const { control, handleSubmit, formState: { isValid, isSubmitting } } = useForm<loginSchema>({
+    const { control, handleSubmit, formState: { isValid, isSubmitting } } = useForm<LoginSchema>({
         mode: 'onTouched',
         resolver: zodResolver(loginSchema)
     });
 
-    const onSubmit = async (data: loginSchema) => {
-        loginUser.mutate(data, {
+    const onSubmit = async (data: LoginSchema) => {
+        await loginUser.mutateAsync(data, {
             onSuccess: () => {
-                navigate(location.state?.from || '/activities');
+                navigate(location.state?.from || '/activities')
             }
-        });
+        }
+        );
     }
 
     return (

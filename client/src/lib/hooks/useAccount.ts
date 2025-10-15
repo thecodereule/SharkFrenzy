@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import type { loginSchema } from "../schemas/loginSchema"
+import type { LoginSchema } from "../schemas/loginSchema"
 import agent from "../api/agent"
 import { useLocation, useNavigate } from "react-router";
 import type { RegisterSchema } from "../schemas/registerSchema";
@@ -11,7 +11,7 @@ export const useAccount = () => {
     const location = useLocation();
 
     const loginUser = useMutation({
-        mutationFn: async (creds: loginSchema) => {
+        mutationFn: async (creds: LoginSchema) => {
             await agent.post('/login?useCookies=true', creds);
         },
         onSuccess: async () => {
