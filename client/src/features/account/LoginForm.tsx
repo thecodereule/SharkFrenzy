@@ -17,11 +17,12 @@ export default function LoginForm() {
     });
 
     const onSubmit = async (data: loginSchema) => {
-        loginUser.mutate(data, {
-            onSuccess: () => {
-                navigate(location.state?.from || '/activities');
-            }
-        });
+        try {
+            await loginUser.mutateAsync(data);
+            navigate(location.state?.from || '/activities');
+        } catch {
+            // Error handling is done by the mutation's onError callback
+        }
     }
 
     return (
