@@ -9,11 +9,8 @@ type Props = {
 }
 
 export default function ActivityCard({ activity }: Props) {
-    const isHost = false;
-    const isGoing = false;
-    const label = isHost ? 'You are hosting this activity' : isGoing ? 'You are going to this activity' : '';
-    const isCancelled = false;
-    const color = isHost ? 'secondary' : isGoing ? 'warning' : 'default';
+    const label = activity.isHost ? 'You are hosting' : 'You are going';
+    const color = activity.isHost ? 'secondary' : activity.isGoing ? 'warning' : 'default';
 
     return (
         <Card elevation={3} sx={{ borderRadius: 3 }}>
@@ -27,13 +24,16 @@ export default function ActivityCard({ activity }: Props) {
                     }}
                     subheader={
                         <>
-                            Hosted by {' '} <Link to={`/profiles/bob`}>Bob </Link>
+                            Hosted by {' '} 
+                            <Link to={`/profiles/${activity.hostId}`}>
+                                {activity.hostDisplayName}
+                            </Link>
                         </>
                     }
                 />
                 <Box display='flex' flexDirection='column' gap={2} mr={2}>
-                    {(isHost || isGoing) && <Chip label={label} color={color} sx={{ borderRadius: 2 }}></Chip>}
-                    {isCancelled && <Chip label='Cancelled' color='error' sx={{ borderRadius: 2 }}></Chip>}
+                    {(activity.isHost || activity.isGoing) && <Chip label={label} color={color} sx={{ borderRadius: 2 }}></Chip>}
+                    {activity.isCancelled && <Chip label='Cancelled' color='error' sx={{ borderRadius: 2 }}></Chip>}
                 </Box>
             </Box>
 
@@ -51,7 +51,15 @@ export default function ActivityCard({ activity }: Props) {
                 </Box>
                 <Divider />
                 <Box display='flex' gap={2} sx={{ backgroundColor: 'grey.200', py: 3, pl: 3 }}>
-                    Attendees go here
+                    {activity.attendees.map(att => (
+                        <Avatar 
+                            key={att.id}
+                            alt={att.displayName + ' image'}
+                            src={att.imageUrl}
+                            component={Link}
+                            to={`/profiles/${att.id}`}
+                        />
+                    ))}
                 </Box>
             </CardContent>
             <CardContent sx={{ pb: 2 }}>
