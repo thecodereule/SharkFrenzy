@@ -28,7 +28,7 @@ export const useActivities = (id?: string) => {
     });
 
     const { data: activity, isLoading: isLoadingActivity } = useQuery({
-        queryKey: ['activitiies', id],
+        queryKey: ['activities', id],
         queryFn: async () => {
             const response = await agent.get<Activity>(`/activities/${id}`)
             return response.data
