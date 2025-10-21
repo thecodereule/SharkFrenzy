@@ -15,7 +15,7 @@ public class AddPhoto
         public required IFormFile File { get; set; }
     }
 
-    public class Handler(IUserAccessor userAccessor, AppDbContext context, IphotoService photoService)
+    public class Handler(IUserAccessor userAccessor, AppDbContext context, IPhotoService photoService)
         : IRequestHandler<Command, Result<Photo>>
     {
         public async Task<Result<Photo>> Handle(Command request, CancellationToken cancellationToken)

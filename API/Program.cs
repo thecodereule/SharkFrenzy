@@ -34,7 +34,7 @@ builder.Services.AddMediatR(x =>
 });
 
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
-builder.Services.AddScoped<IphotoService, PhotoService>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();

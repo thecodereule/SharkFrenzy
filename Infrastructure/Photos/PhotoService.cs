@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Photos;
 
-public class PhotoService : IphotoService
+public class PhotoService : IPhotoService
 {
     private readonly Cloudinary _cloudinary;
 
