@@ -55,6 +55,6 @@ export const useAccount = () => {
         currentUser,
         logoutUser,
         loadingUserInfo,
-        registerUser
+        registerUser,
     }
 }
