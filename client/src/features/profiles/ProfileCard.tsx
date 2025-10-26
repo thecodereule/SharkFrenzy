@@ -10,7 +10,7 @@ type Props = {
 export default function ProfileCard({ profile }: Props) {
 	return (
 		<Link to={`/profiles/${profile.id}`} style={{ textDecoration: 'none' }}>
-			<Card sx={{ borderRadius: 3, p: 3, maxWidth: 300, textDecoration: 'none' }} elevation={4}>
+			<Card sx={{ borderRadius: 3, p: 3, maxWidth: 250, textDecoration: 'none' }} elevation={4}>
 				<CardMedia
 					component='img'
 					src={profile?.imageUrl || '/images/user.png'}
