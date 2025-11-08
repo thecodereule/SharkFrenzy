@@ -46,6 +46,7 @@ type User = {
 }
 
 type ChatComment = {
+    userDisplayName: ReactNode
     id: string
     createdAt: Date
     body: string
