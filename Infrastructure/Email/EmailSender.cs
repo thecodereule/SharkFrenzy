@@ -42,7 +42,7 @@ public class EmailSender(IResend resend) : IEmailSender<User>
 
         Console.WriteLine(message.HtmlBody);
 
-        // await resend.EmailSendAsync(message);
+        await resend.EmailSendAsync(message);
         await Task.CompletedTask;
     }
 }
