@@ -12,11 +12,11 @@ public class EmailSender(IResend resend) : IEmailSender<User>
         var subject = "confirm your email address";
         var body = $@"
             <p>Hi {user.DisplayName}</p>
-            <p>Please confirm your email by clicking the link bellow</p>
-            <p><a href='{confirmationLink}>Click here to verify email</p>
+            <p>Please confirm your email by clicking the link below</p>
+            <p><a href='{confirmationLink}'>Click here to verify email</a></p>
             <p>Thanks</p>
         ";
-
+        
         await SendMailAsync(email, subject, body);
     }
 
