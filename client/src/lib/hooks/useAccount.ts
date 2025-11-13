@@ -39,7 +39,7 @@ export const useAccount = () => {
 
     const verifyEmail = useMutation({
         mutationFn: async ({userId, code}: {userId: string, code: string}) => {
-            await agent.get(`/confirmEmail?userId=${userId}&code${code}`)
+            await agent.get(`/confirmEmail?userId=${userId}&code=${code}`)
         }
     });
 
