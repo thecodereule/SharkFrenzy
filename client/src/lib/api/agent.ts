@@ -30,7 +30,7 @@ agent.interceptors.response.use(
         store.uiStore.isIdle();
 
         const { status, data } = error.response;
-        switch(status) {
+        switch (status) {
             case 400:
                 if (data.errors) {
                     const modalStateErrors = [];
@@ -45,13 +45,17 @@ agent.interceptors.response.use(
                 }
                 break;
             case 401:
-                toast.error('Unauthorized')
+                if (data.detail === 'NotAllowed') {
+                    throw new Error(data.detail)
+                } else {
+                    toast.error('Unauthorized')
+                }
                 break;
             case 404:
                 router.navigate('/not-found');
                 break;
             case 500:
-                router.navigate('/server-error', {state: {error: data}});
+                router.navigate('/server-error', { state: { error: data } });
                 break;
             default:
                 break;
