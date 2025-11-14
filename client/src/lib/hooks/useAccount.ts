@@ -29,36 +29,41 @@ export const useAccount = () => {
     const logoutUser = useMutation({
         mutationFn: async () => {
             await agent.post('/account/logout');
-        }, 
+        },
         onSuccess: () => {
-            queryClient.removeQueries({queryKey: ['user']});
-            queryClient.removeQueries({queryKey: ['activities']});
+            queryClient.removeQueries({ queryKey: ['user'] });
+            queryClient.removeQueries({ queryKey: ['activities'] });
             navigate('/');
         }
     })
 
     const verifyEmail = useMutation({
-        mutationFn: async ({userId, code}: {userId: string, code: string}) => {
+        mutationFn: async ({ userId, code }: { userId: string, code: string }) => {
             await agent.get(`/confirmEmail?userId=${userId}&code=${code}`)
         }
     });
 
     const resendConfirmationEmail = useMutation({
-        mutationFn: async (email: string) => {
-            await agent.get(`/account/resendConfirmEmail?email=${email}`)
+        mutationFn: async ({ email, userId }: { email?: string, userId?: string | null }) => {
+            await agent.get(`/account/resendConfirmEmail`, {
+                params: {
+                    email,
+                    userId
+                }
+            })
         },
         onSuccess: () => {
             toast.success('Email sent - please check your email');
         }
     })
 
-    const {data: currentUser, isLoading: loadingUserInfo} = useQuery({
+    const { data: currentUser, isLoading: loadingUserInfo } = useQuery({
         queryKey: ['user'],
         queryFn: async () => {
             const response = await agent.get<User>('/account/user-info');
             return response.data;
         },
-        enabled: !queryClient.getQueryData(['user']) 
+        enabled: !queryClient.getQueryData(['user'])
     })
 
     return {

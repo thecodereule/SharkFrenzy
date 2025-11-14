@@ -5,7 +5,7 @@ import { Box, Button, Divider, Paper, Typography } from "@mui/material";
 import { EmailRounded } from "@mui/icons-material";
 
 export default function VerifyEmail() {
-    const { verifyEmail } = useAccount();
+    const { verifyEmail, resendConfirmationEmail } = useAccount();
     const [status, setStatus] = useState('verifying');
     const [searchParams] = useSearchParams();
     const userId = searchParams.get('userId');
@@ -29,7 +29,10 @@ export default function VerifyEmail() {
                 return (
                     <Box display='flex' flexDirection='column' gap={2} justifyContent='center'>
                         <Typography>Verification failed. You can try resending the verify link to your email.</Typography>
-                        <Button>
+                        <Button
+                            onClick={() => resendConfirmationEmail.mutate({userId})}
+                            disabled={resendConfirmationEmail.isPending}
+                        >
                             Resend verification email
                         </Button>
                     </Box>
