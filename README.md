@@ -1,0 +1,1 @@
+SharkFrenzy web app designed for sharing social events and interact with event-goers. It is a full‑stack web project combining a C# backend with a modern React + TypeScript (Vite) frontend, deployed to Azure. I built core services, a clean REST API, and a responsive UI, focusing on performance, code quality (ESLint + typed rules), and cloud deployment automation.
